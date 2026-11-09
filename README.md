@@ -1,6 +1,6 @@
 # meal-decider
 
-**今天全家吃什么？** is a mobile-first family restaurant decision tool for WBY, SOL, WL and WCY. It is a static HTML + Tailwind CSS + JavaScript app backed by Supabase Auth, Postgres, Storage and Realtime.
+This is a mobile-first family restaurant decision tool for WBY, SOL, WL and WCY. It is a static HTML + Tailwind CSS + JavaScript app backed by Supabase Auth, Postgres, Storage and Realtime.
 
 ## Features
 
