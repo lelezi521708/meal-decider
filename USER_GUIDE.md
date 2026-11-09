@@ -2,52 +2,52 @@
 
 ## 1. Sign in
 
-Open the GitHub Pages URL and choose one of the four accounts: **WBY**, **SOL**, **WL** or **WCY**. Enter that account's Supabase password and press **开吃！**. The session is retained by the browser, so a refresh does not require another login.
+Open the GitHub Pages URL and choose one of the four accounts. Enter that account's Supabase password and press. The session is retained by the browser, so a refresh does not require another login.
 
 Only the four created Supabase users can access the shared database. There is no registration form.
 
 ## 2. Browse the restaurant library
 
-The **餐厅库** tab contains three filters:
+The tab contains three filters:
 
-- **全部** — every saved restaurant.
-- **已经吃过** — restaurants with the visited switch enabled.
-- **想吃还未吃** — restaurants that are still on the family wish list.
+-every saved restaurant.
+ — restaurants with the visited switch enabled.
+ — restaurants that are still on the family wish list.
 
 Use the search field to find a name, category, Shenyang area or note. Tap a card to expand the complete record. The card shows each family member's score and the current average.
 
 ## 3. Add or edit a restaurant
 
-1. Open **添加餐厅**.
+1. Open 
 2. Choose a photo from the phone or computer. The browser compresses it before uploading.
 3. Enter the restaurant name, category and Shenyang area/address.
-4. Turn on **已经吃过** and choose a date when appropriate.
+4. Turn onand choose a date when appropriate.
 5. Add discount tags and notes such as recommended dishes or warnings.
 6. Set any of the four scores: WBY, SOL, WL and WCY. Leaving a person blank is allowed.
-7. Press **保存餐厅**.
+7. Press .
 
 The average is calculated from the completed scores only. For example, scores 8 and 6 display an average of 7; blank scores are not treated as zero.
 
-To edit, press the pencil button on a card or open the card and choose **编辑**. To delete, use the trash button and confirm.
+To edit, press the pencil button on a card or open the card and choose . To delete, use the trash button and confirm.
 
 ## 4. Use the food wheel
 
-1. Open **美食转盘**.
+1. Open .
 2. Select one mode: all restaurants, visited restaurants or not-yet-visited restaurants.
 3. Optionally choose a category and a minimum average score.
 4. Confirm the eligible count.
-5. Press **开始转盘**.
+5. Press .
 
-The wheel accelerates, slows down and stops on one restaurant. The result says **就吃你了！** and includes the photo, four scores, average, rating label, tags and notes.
+The wheel accelerates, slows down and stops on one restaurant. The result says  and includes the photo, four scores, average, rating label, tags and notes.
 
 Rating labels are:
 
-- 8–10: **很美味**
-- 6–under 8: **还不错**
-- 4–under 6: **一般**
-- 0–under 4: **别吃了**
+- 8–10: 
+- 6–under 8:
+- 4–under 6: 
+- 0–under 4: 
 
-Use **再转一次** to spin again or **查看详情** to open the restaurant record. If no restaurant meets the filters, loosen the category or score requirement.
+Use to spin again or  to open the restaurant record. If no restaurant meets the filters, loosen the category or score requirement.
 
 ## 5. Settings and backups
 
