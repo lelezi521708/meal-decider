@@ -52,12 +52,11 @@ Open <http://localhost:8080>. Without Supabase configuration, the app automatica
 ## GitHub Pages deployment
 
 1. Push the repository to GitHub (the repository may be public for Pages).
-2. Open **Settings → Pages**.
-3. Choose **Deploy from a branch**.
-4. Select `main` and the `/dist` folder, then save.
-5. GitHub will publish a URL similar to `https://YOUR_USERNAME.github.io/meal-decider/`.
+2. Open **Settings → Pages** and set **Source** to **GitHub Actions**.
+3. Push to `main` or run the included **Deploy meal-decider to GitHub Pages** workflow manually.
+4. GitHub will publish a URL similar to `https://YOUR_USERNAME.github.io/meal-decider/`.
 
-If you prefer GitHub Actions, point the workflow artifact at the contents of `dist/`. The app is buildless: no npm install or build command is required.
+The included workflow publishes the contents of `dist/`. The app is buildless: no npm install or build command is required.
 
 ## Security notes
 
