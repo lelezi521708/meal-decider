@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#FFF8E8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="四口之家吃饭决策器：WBY、SOL、WL、WCY 共享餐厅库。">
+  <title>今天全家吃什么？｜meal-decider</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{cream:'#FFF8E8',peach:'#FFE6CC',terracotta:'#D48166',ink:'#333333'}}}}</script>
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <section id="login-view" class="min-h-screen grid place-items-center p-5">
+    <div class="warm-card w-full max-w-md p-6 sm:p-8">
+      <div class="brand-mark">🍲</div>
+      <p class="eyebrow">FOUR-PERSON FOOD DECIDER</p>
+      <h1 class="text-4xl font-black mt-2">今天全家吃什么？</h1>
+      <p class="muted mt-2 mb-7">四口之家专属吃饭决策工具，先把选择困难放一边。</p>
+      <div id="demo-note" class="hidden note mb-5">当前是本机演示模式。接入 Supabase 后，WBY、SOL、WL、WCY 可跨设备共享。</div>
+      <form id="login-form" class="space-y-4">
+        <div><label class="label" for="login-person">选择账号</label><select id="login-person" class="field"><option value="wby">WBY</option><option value="sol">SOL</option><option value="wl">WL</option><option value="wcy">WCY</option></select></div>
+        <div><label class="label" for="login-password">密码</label><input id="login-password" class="field" type="password" autocomplete="current-password" placeholder="输入 Supabase 账号密码"></div>
+        <button class="btn btn-primary w-full" type="submit">开吃！</button>
+      </form>
+      <p class="text-xs muted text-center mt-5">登录状态会保存在当前浏览器</p>
+    </div>
+  </section>
+
+  <div id="app-view" class="hidden min-h-screen pb-28">
+    <header class="sticky top-0 z-40 header-glass">
+      <div class="max-w-5xl mx-auto px-4 pt-[max(12px,env(safe-area-inset-top))] pb-3 flex items-center justify-between gap-3">
+        <div><h1 class="font-black text-xl sm:text-2xl">今天全家吃什么？</h1><p class="text-[11px] sm:text-xs muted">WBY · SOL · WL · WCY 的家庭干饭工具</p></div>
+        <div class="flex items-center"><span id="current-person" class="person-pill">WBY</span><img id="header-avatar" class="avatar ml-2" alt="当前头像"><span id="sync-dot" class="sync-dot"></span></div>
+      </div>
+      <nav class="max-w-3xl mx-auto grid grid-cols-4 gap-1 px-3 pb-2" aria-label="主导航">
+        <button class="tab-button active" data-view="library"><span>📖</span>餐厅库</button>
+        <button class="tab-button" data-view="add"><span>➕</span>添加餐厅</button>
+        <button class="tab-button" data-view="wheel"><span>🎡</span>美食转盘</button>
+        <button class="tab-button" data-view="settings"><span>⚙️</span>设置 &amp; 数据</button>
+      </nav>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-4 sm:p-6">
+      <section id="view-library" class="view-section">
+        <div class="flex items-end justify-between gap-3 mb-4"><div><p class="eyebrow">THE FAMILY FOOD MAP</p><h2 class="text-2xl font-black">餐厅库</h2></div><button id="quick-add" class="btn btn-primary">+ 新餐厅</button></div>
+        <div class="tab-strip mb-4"><button class="seg-button active" data-group="all">全部 <span id="count-all">0</span></button><button class="seg-button" data-group="visited">✅ 已经吃过 <span id="count-visited">0</span></button><button class="seg-button" data-group="wishlist">🤤 想吃还未吃 <span id="count-wishlist">0</span></button></div>
+        <div class="relative mb-5"><span class="search-icon">⌕</span><input id="search-input" class="field pl-11" placeholder="搜索餐厅、类别、沈阳区域"></div>
+        <div id="restaurant-list" class="restaurant-grid"></div>
+        <div id="empty-library" class="hidden warm-card p-10 text-center"><div class="text-5xl mb-3">🍚</div><h3 class="font-black text-lg">餐厅库还在等第一口饭</h3><p class="muted text-sm mt-1 mb-5">先加一家，家庭投票大会马上开始。</p><button class="btn btn-primary" data-go-add>添加第一家餐厅</button></div>
+      </section>
+
+      <section id="view-add" class="view-section hidden">
+        <div class="mb-5"><p class="eyebrow">ADD A PLACE</p><h2 id="form-title" class="text-2xl font-black">添加餐厅</h2><p class="muted text-sm">把下一顿饭先登记，避免全家互相问“随便”。</p></div>
+        <form id="restaurant-form" class="warm-card p-5 sm:p-7 space-y-5">
+          <input id="restaurant-id" type="hidden">
+          <div><label class="label">餐厅图片</label><label class="upload-box"><input id="image-input" type="file" accept="image/*" class="hidden"><div id="image-placeholder" class="p-8 text-center"><div class="text-4xl">📷</div><p class="font-black mt-2">从手机相册选择</p><p class="text-xs muted">图片会自动压缩</p></div><img id="image-preview" class="hidden w-full h-56 object-cover" alt="预览"></label></div>
+          <div><label class="label" for="restaurant-name">餐厅名称 *</label><input id="restaurant-name" class="field" required maxlength="80" placeholder="例如：铁西那家烤肉"></div>
+          <div class="grid sm:grid-cols-2 gap-4"><div><label class="label" for="restaurant-category">餐厅类别 *</label><input id="restaurant-category" class="field" required list="category-options" placeholder="火锅、日料、烧烤…"><datalist id="category-options"></datalist></div><div><label class="label" for="restaurant-address">沈阳区域 / 地址</label><input id="restaurant-address" class="field" placeholder="和平区 / 门店地址"></div></div>
+          <div class="grid sm:grid-cols-2 gap-4 items-end"><div><label class="label" for="visited-date">打卡日期</label><input id="visited-date" class="field" type="date"></div><div class="toggle-row"><div><p class="font-black text-sm">已经吃过</p><p class="text-xs muted">开启后归入“已经吃过”</p></div><label class="switch"><input id="is-visited" type="checkbox"><span class="slider"></span></label></div></div>
+          <div><label class="label" for="discounts">优惠标签</label><input id="discounts" class="field" placeholder="学生优惠, 午市优惠（逗号分隔）"><div class="flex gap-2 mt-2 flex-wrap"><button type="button" class="chip discount-preset">学生优惠</button><button type="button" class="chip discount-preset">午市优惠</button></div></div>
+          <div><label class="label" for="notes">推荐菜 / 避雷 / 备注</label><textarea id="notes" class="field" maxlength="1000" placeholder="谁想吃什么、什么不要点，写在这里…"></textarea></div>
+          <div><label class="label">四人独立评分（0–10）</label><div class="grid grid-cols-2 gap-4" id="score-pickers"></div><p class="text-xs muted mt-2">已填写的分数会立即参与平均分计算。</p></div>
+          <div class="flex gap-3 pt-2"><button id="cancel-edit" type="button" class="btn btn-soft hidden flex-1">取消编辑</button><button id="submit-restaurant" type="submit" class="btn btn-primary flex-[2]">保存餐厅</button></div>
+        </form>
+      </section>
+
+      <section id="view-wheel" class="view-section hidden">
+        <div class="text-center mb-5"><p class="eyebrow">FAMILY RANDOMIZER</p><h2 class="text-2xl font-black">今天别再互相推锅</h2><p class="muted text-sm">让转盘承担这个艰巨的家庭任务。</p></div>
+        <div class="warm-card p-5 sm:p-7 mb-5"><label class="label">转盘模式</label><div class="grid sm:grid-cols-3 gap-2 mb-5"><button class="btn btn-soft wheel-mode active" data-mode="all">🥳 全部随机</button><button class="btn btn-soft wheel-mode" data-mode="visited">✅ 吃过的</button><button class="btn btn-soft wheel-mode" data-mode="wishlist">🤤 没吃过的</button></div><div class="grid sm:grid-cols-2 gap-5"><div><label class="label" for="wheel-category">餐厅类别</label><select id="wheel-category" class="field"><option value="">全部类别</option></select></div><div><label class="label" for="min-score">最低平均分：<span id="min-score-value">0</span></label><input id="min-score" class="range" type="range" min="0" max="10" step="0.5" value="0"></div></div><p class="text-center text-xs muted mt-4">当前有 <b id="eligible-count" class="accent-text">0</b> 家餐厅进入转盘</p></div>
+        <div id="ready-copy" class="ready text-center mb-4">READY GO</div><div class="wheel-wrap"><div class="pointer"></div><canvas id="wheel-canvas" class="wheel" width="700" height="700"></canvas><div class="wheel-center">吃啥</div></div><button id="spin-button" class="btn btn-primary w-full max-w-sm block mx-auto mt-7 text-lg">开始转盘</button>
+      </section>
+
+      <section id="view-settings" class="view-section hidden">
+        <div class="mb-5"><p class="eyebrow">HOUSEKEEPING</p><h2 class="text-2xl font-black">设置 &amp; 数据</h2></div>
+        <div class="grid grid-cols-3 gap-3 mb-5"><div class="warm-card p-4 text-center"><p id="stat-total" class="text-2xl font-black accent-text">0</p><p class="text-xs muted">全部收藏</p></div><div class="warm-card p-4 text-center"><p id="stat-visited" class="text-2xl font-black accent-text">0</p><p class="text-xs muted">已经吃过</p></div><div class="warm-card p-4 text-center"><p id="stat-wishlist" class="text-2xl font-black accent-text">0</p><p class="text-xs muted">未打卡</p></div></div>
+        <div class="warm-card p-5 sm:p-7 mb-5"><h3 class="font-black text-lg mb-4">家庭头像</h3><div id="avatar-settings" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div></div>
+        <div class="warm-card p-5 sm:p-7 mb-5 space-y-4"><h3 class="font-black text-lg">转盘偏好</h3><div class="toggle-row"><div><p class="font-black">彩色碎片特效</p><p class="text-xs muted">抽中后撒一点庆祝碎片</p></div><label class="switch"><input id="particles-toggle" type="checkbox" checked><span class="slider"></span></label></div><div class="toggle-row"><div><p class="font-black">转盘音效</p><p class="text-xs muted">想安静吃饭可以关闭</p></div><label class="switch"><input id="sound-toggle" type="checkbox"><span class="slider"></span></label></div></div>
+        <div class="warm-card p-5 sm:p-7 mb-5"><h3 class="font-black text-lg mb-3">平均分分布</h3><div id="score-distribution" class="space-y-3"></div></div>
+        <div class="warm-card p-5 sm:p-7 space-y-3"><button id="export-button" class="btn btn-soft w-full">⬇️ 导出全部餐厅 JSON</button><button id="install-button" class="btn btn-soft w-full hidden">📲 安装到这台设备</button><button id="logout-button" class="btn btn-danger w-full">退出当前账号</button></div><p id="app-mode" class="text-center text-xs muted mt-4"></p>
+      </section>
+    </main>
+  </div>
+
+  <div id="detail-modal" class="modal-shell hidden"><div class="modal-panel" id="detail-panel"></div></div>
+  <div id="result-modal" class="modal-shell hidden"><div class="modal-panel text-center" id="result-panel"></div></div>
+  <div id="confirm-modal" class="modal-shell hidden"><div class="modal-panel text-center max-w-sm"><div class="text-5xl mb-3">🧾</div><h3 class="text-xl font-black">确定删除这家餐厅？</h3><p class="muted text-sm mt-2">删除后要重新输入，家庭会议请谨慎。</p><div class="grid grid-cols-2 gap-3 mt-6"><button id="cancel-delete" class="btn btn-soft">先留着</button><button id="confirm-delete" class="btn btn-danger">确认删除</button></div></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script>
+</body>
+</html>
