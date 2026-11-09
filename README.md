@@ -1,6 +1,6 @@
 # meal-decider
 
-This is a mobile-first family restaurant decision tool for WBY, SOL, WL and WCY. It is a static HTML + Tailwind CSS + JavaScript app backed by Supabase Auth, Postgres, Storage and Realtime.
+This is a mobile-first family restaurant decision tool for the family. It is a static HTML + Tailwind CSS + JavaScript app backed by Supabase Auth, Postgres, Storage and Realtime.
 
 ## Features
 
@@ -11,7 +11,7 @@ This is a mobile-first family restaurant decision tool for WBY, SOL, WL and WCY.
 - Compressed restaurant photos and family avatars in Supabase Storage.
 - Realtime updates for adds, edits, scores, deletes and settings.
 - A filterable wheel: all restaurants, visited restaurants or not-yet-visited restaurants.
-- Average-score labels: 很美味, 还不错, 一般, 别吃了.
+- Average-score labels
 - JSON backup export and optional PWA installation.
 
 ## Folder layout
