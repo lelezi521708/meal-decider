@@ -4,7 +4,7 @@ This is a mobile-first family restaurant decision tool for the family. It is a s
 
 ## Features
 
-- Four fixed Supabase accounts: WBY, SOL, WL and WCY (no public registration).
+- Four fixed Supabase accounts:  (no public registration).
 - Shared restaurant library with visited / not-yet-visited groups.
 - Shenyang area/address fields, custom categories and discount tags.
 - Four independent 0–10 scores. The average uses only completed scores.
